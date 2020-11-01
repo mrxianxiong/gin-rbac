@@ -17,7 +17,7 @@ func CollectRoute(r *gin.Engine) *gin.Engine {
 	}
 	epRole := r.Group("/eprole")
 	{
-		epRole.POST("/addeprole")
+		epRole.POST("/addeprole", controller.AddEpRole)
 	}
 	return r
 }
