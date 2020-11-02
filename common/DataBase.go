@@ -24,6 +24,7 @@ func InitDB() *gorm.DB {
 	arges := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=%s&parseTime=true",
 		username, password, host, port, database, charset)
 	db, err := gorm.Open(driverName, arges)
+	db.LogMode(true)
 	if err != nil {
 		panic("failed to connect databases,err:" + err.Error())
 	}

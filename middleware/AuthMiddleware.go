@@ -30,17 +30,17 @@ func AuthMiddleware() gin.HandlerFunc {
 
 		// 验证token
 		token, claims, err := common.ParseToken(tokenString)
-		if err != nil || token.Valid {
+		if err != nil || !token.Valid {
 			c.JSON(http.StatusUnauthorized, gin.H{"code": "401", "msg": "未认证"})
 			c.Abort()
 			return
 		}
 
 		// 验证通过获取claims中的userId
-		userId := string(claims.UserId)
+		userId := claims.UserId
 		db := common.GetDBInstance()
 		var user model.EpUser
-		db.First(&user, userId)
+		db.First(&user, "id=?", userId)
 
 		// 用户不存在
 		if user.Id == "" {
