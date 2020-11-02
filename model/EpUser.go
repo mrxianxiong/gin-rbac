@@ -11,7 +11,7 @@ import (
 
 // 用户表
 type EpUser struct {
-	Id         int64     `gorm:"column:id;primary_key"`     // 主键
+	Id         string    `gorm:"column:id;primary_key"`     // 主键
 	UserName   string    `gorm:"column:user_name;NOT NULL"` // 用户名
 	Password   string    `gorm:"column:password;NOT NULL"`  // 密码
 	NickName   string    `gorm:"column:nick_name"`          // 昵称

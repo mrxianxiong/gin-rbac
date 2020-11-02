@@ -14,6 +14,7 @@ func CollectRoute(r *gin.Engine) *gin.Engine {
 	epUser := r.Group("/epuser")
 	{
 		epUser.POST("/addepuser", controller.AddEpUser)
+		epUser.POST("/login", controller.Login)
 	}
 	epRole := r.Group("/eprole")
 	{

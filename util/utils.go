@@ -5,55 +5,16 @@
 
 package util
 
-import "fmt"
-
-/**
- * UUIDGenerator 可以生成全局唯一的字符串形式的ID，ID由两部分构成，一部分是用户指定的前缀，另一部分是数字，数字的最大值为 4294967295;
- * UUIDGenerator 可以生成全局唯一的无符号整形数字，数字范围 0- 4294967295
- */
-
-const (
-	MAXUINT32              = 4294967295
-	DEFAULT_UUID_CNT_CACHE = 512
+import (
+	"fmt"
+	guuid "github.com/google/uuid"
 )
 
-type UUIDGenerator struct {
-	Prefix       string
-	idGen        uint32
-	internalChan chan uint32
-}
+var uuid string
 
-func NewUUIDGenerator(prefix string) *UUIDGenerator {
-	gen := &UUIDGenerator{
-		Prefix:       prefix,
-		idGen:        0,
-		internalChan: make(chan uint32, DEFAULT_UUID_CNT_CACHE),
-	}
-	gen.startGen()
-	return gen
-}
-
-//开启 goroutine, 把生成的数字形式的UUID放入缓冲管道
-func (this *UUIDGenerator) startGen() {
-	go func() {
-		for {
-			if this.idGen == MAXUINT32 {
-				this.idGen = 1
-			} else {
-				this.idGen += 1
-			}
-			this.internalChan <- this.idGen
-		}
-	}()
-}
-
-//获取带前缀的字符串形式的UUID
-func (this *UUIDGenerator) Get() string {
-	idgen := <-this.internalChan
-	return fmt.Sprintf("%s%d", this.Prefix, idgen)
-}
-
-//获取uint32形式的UUID
-func (this *UUIDGenerator) GetUint32() uint32 {
-	return <-this.internalChan
+func genUUID() string {
+	id := guuid.New()
+	fmt.Printf("github.com/google/uuid:         %s\n", id.String())
+	uuid = id.String()
+	return uuid
 }
