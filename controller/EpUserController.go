@@ -7,7 +7,9 @@ package controller
 
 import (
 	"gin-rbac/common"
+	"gin-rbac/dto"
 	"gin-rbac/model"
+	"gin-rbac/response"
 	"github.com/gin-gonic/gin"
 	guuid "github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
@@ -30,7 +32,7 @@ func AddEpUser(c *gin.Context) {
 	// 创建用户
 	haseDPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"code": 500, "msg": "加密错误"})
+		response.Response(c, http.StatusInternalServerError, 500, nil, "加密错误")
 		return
 	}
 	create_id, err := strconv.ParseInt(createId, 10, 64)
@@ -60,7 +62,7 @@ func GetUserInfo(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{
 		"code": 200,
 		"data": gin.H{
-			"user": user,
+			"user": dto.ToEpUserDto(user.(model.EpUser)),
 		},
 	})
 }

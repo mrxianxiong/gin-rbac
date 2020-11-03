@@ -15,9 +15,9 @@ var DB *gorm.DB
 // 初始化数据库实例
 func InitDB() *gorm.DB {
 	driverName := "mysql"
-	host := "localhost"
-	port := "3306"
-	database := "gin-gorm-project"
+	host := "112.74.38.97"
+	port := "10101"
+	database := "gin-rbac"
 	username := "root"
 	password := "root"
 	charset := "utf8"
