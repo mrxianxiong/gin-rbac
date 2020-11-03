@@ -9,8 +9,8 @@ package middleware
 import (
 	"gin-rbac/common"
 	"gin-rbac/model"
+	"gin-rbac/response"
 	"github.com/gin-gonic/gin"
-	"net/http"
 	"strings"
 )
 
@@ -21,7 +21,7 @@ func AuthMiddleware() gin.HandlerFunc {
 
 		// validate token formate
 		if tokenString == "" || !strings.HasPrefix(tokenString, "Bearer") {
-			c.JSON(http.StatusUnauthorized, gin.H{"code": "401", "msg": "未认证"})
+			response.NoAuthorization(c, "未认证", nil)
 			c.Abort()
 			return
 		}
@@ -31,7 +31,7 @@ func AuthMiddleware() gin.HandlerFunc {
 		// 验证token
 		token, claims, err := common.ParseToken(tokenString)
 		if err != nil || !token.Valid {
-			c.JSON(http.StatusUnauthorized, gin.H{"code": "401", "msg": "未认证"})
+			response.NoAuthorization(c, "未认证", nil)
 			c.Abort()
 			return
 		}
@@ -44,7 +44,7 @@ func AuthMiddleware() gin.HandlerFunc {
 
 		// 用户不存在
 		if user.Id == "" {
-			c.JSON(http.StatusUnauthorized, gin.H{"code": "401", "msg": "未认证"})
+			response.NoAuthorization(c, "未认证", nil)
 			c.Abort()
 			return
 		}

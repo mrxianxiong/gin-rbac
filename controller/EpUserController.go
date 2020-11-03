@@ -50,19 +50,11 @@ func AddEpUser(c *gin.Context) {
 	}
 	DB.Create(&newUser)
 	// 返回结果
-	c.JSON(200, gin.H{
-		"code": 200,
-		"msg":  "注册成功！",
-	})
+	response.Success(c, nil, "注册成功！")
 }
 
 // 获取token中设置的用户
 func GetUserInfo(ctx *gin.Context) {
 	user, _ := ctx.Get("user")
-	ctx.JSON(http.StatusOK, gin.H{
-		"code": 200,
-		"data": gin.H{
-			"user": dto.ToEpUserDto(user.(model.EpUser)),
-		},
-	})
+	response.Success(ctx, gin.H{"data": dto.ToEpUserDto(user.(model.EpUser))}, "获取成功！")
 }

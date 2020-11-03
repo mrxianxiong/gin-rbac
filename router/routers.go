@@ -18,13 +18,13 @@ func CollectRoute(r *gin.Engine) *gin.Engine {
 		auth.POST("/login", controller.Login)
 	}
 	// 用户相关的接口
-	epUser := r.Group("/epuser")
+	epUser := r.Group("/epuser", middleware.AuthMiddleware())
 	{
 		epUser.POST("/addepuser", controller.AddEpUser)
-		epUser.GET("/getuserinfo", middleware.AuthMiddleware(), controller.GetUserInfo)
+		epUser.GET("/getuserinfo", controller.GetUserInfo)
 	}
 	// 权限相关的接口
-	epRole := r.Group("/eprole")
+	epRole := r.Group("/eprole", middleware.AuthMiddleware())
 	{
 		epRole.POST("/addeprole", controller.AddEpRole)
 	}
