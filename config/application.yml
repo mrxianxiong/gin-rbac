@@ -1,0 +1,10 @@
+server:
+  port: 8080
+databases:
+  driverName: mysql
+  host: 112.74.38.97
+  port: 10101
+  database: gin-rbac
+  username: root
+  password: root
+  charset: utf8
