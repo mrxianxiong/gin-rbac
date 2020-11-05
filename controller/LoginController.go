@@ -6,7 +6,8 @@
 package controller
 
 import (
-	"gin-rbac/common"
+	"gin-rbac/common/database"
+	"gin-rbac/common/jwt"
 	"gin-rbac/model"
 	"gin-rbac/response"
 	"github.com/gin-gonic/gin"
@@ -17,7 +18,7 @@ import (
 
 // 登录
 func Login(c *gin.Context) {
-	db := common.GetDBInstance()
+	db := database.GetDBInstance()
 	// 获取参数
 	userName := c.PostForm("userName")
 	password := c.PostForm("passWord")
@@ -40,7 +41,7 @@ func Login(c *gin.Context) {
 		return
 	}
 	// 发放token
-	token, err := common.ReleaseToken(user)
+	token, err := jwt.ReleaseToken(user)
 	if err != nil {
 		response.Response(c, http.StatusInternalServerError, 500, nil, "加密错误!")
 		log.Printf("token generate error: %v", err)

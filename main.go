@@ -6,7 +6,8 @@
 package main
 
 import (
-	"gin-rbac/common"
+	"gin-rbac/common/database"
+	"gin-rbac/common/redis"
 	"gin-rbac/router"
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
@@ -17,9 +18,11 @@ import (
 func main() {
 	// 加载配置文件
 	InitConfig()
-	db := common.InitDB()
+	db := database.InitDB()
 	// 延迟关闭数据库连接
 	defer db.Close()
+	// 初始化redis
+	redis.InitRedis()
 	// 加载路由
 	r := gin.Default()
 	router.CollectRoute(r)
@@ -28,13 +31,15 @@ func main() {
 	if port != "" {
 		panic(r.Run(":" + port))
 	}
+	panic(r.Run())
 }
 
+// 初始化配置文件
 func InitConfig() {
-	workDir, _ := os.Getwd()
+	dir, _ := os.Getwd()
 	viper.SetConfigName("application")
 	viper.SetConfigType("yml")
-	viper.AddConfigPath(workDir + "/config")
+	viper.AddConfigPath(dir + "/config")
 	err := viper.ReadInConfig()
 	if err != nil {
 		panic("")

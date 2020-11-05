@@ -6,13 +6,13 @@
 package controller
 
 import (
-	"gin-rbac/common"
+	"gin-rbac/common/database"
 	"gin-rbac/model"
 	"github.com/gin-gonic/gin"
 )
 
 func AddEpRole(c *gin.Context) {
-	db := common.GetDBInstance()
+	db := database.GetDBInstance()
 
 	roleCode := c.PostForm("RoleCode")
 	roleName := c.PostForm("RoleName")

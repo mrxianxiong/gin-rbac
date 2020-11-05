@@ -3,7 +3,7 @@
  * @Date: 2020/11/1 21:43
  */
 
-package common
+package jwt
 
 import (
 	"gin-rbac/model"

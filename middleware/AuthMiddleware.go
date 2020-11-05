@@ -7,7 +7,8 @@
 package middleware
 
 import (
-	"gin-rbac/common"
+	"gin-rbac/common/database"
+	"gin-rbac/common/jwt"
 	"gin-rbac/model"
 	"gin-rbac/response"
 	"github.com/gin-gonic/gin"
@@ -29,7 +30,7 @@ func AuthMiddleware() gin.HandlerFunc {
 		tokenString = tokenString[7:]
 
 		// 验证token
-		token, claims, err := common.ParseToken(tokenString)
+		token, claims, err := jwt.ParseToken(tokenString)
 		if err != nil || !token.Valid {
 			response.NoAuthorization(c, "未认证", nil)
 			c.Abort()
@@ -38,7 +39,7 @@ func AuthMiddleware() gin.HandlerFunc {
 
 		// 验证通过获取claims中的userId
 		userId := claims.UserId
-		db := common.GetDBInstance()
+		db := database.GetDBInstance()
 		var user model.EpUser
 		db.First(&user, "id=?", userId)
 

@@ -6,7 +6,7 @@
 package controller
 
 import (
-	"gin-rbac/common"
+	"gin-rbac/common/database"
 	"gin-rbac/dto"
 	"gin-rbac/model"
 	"gin-rbac/response"
@@ -20,7 +20,7 @@ import (
 
 // 新增用户
 func AddEpUser(c *gin.Context) {
-	DB := common.GetDBInstance()
+	DB := database.GetDBInstance()
 	// 获取参数
 	userName := c.PostForm("UserName")
 	password := c.PostForm("Password")

@@ -3,7 +3,7 @@
  * @Date: 2020/11/1 14:29
  */
 
-package common
+package database
 
 import (
 	"fmt"
