@@ -7,8 +7,10 @@
 package middleware
 
 import (
+	"fmt"
 	"gin-rbac/common/database"
 	"gin-rbac/common/jwt"
+	"gin-rbac/common/redis"
 	"gin-rbac/model"
 	"gin-rbac/response"
 	"github.com/gin-gonic/gin"
@@ -38,6 +40,9 @@ func AuthMiddleware() gin.HandlerFunc {
 		}
 
 		// 验证通过获取claims中的userId
+		jsonUser := redis.Get("go-gin" + tokenString)
+		fmt.Println(jsonUser)
+
 		userId := claims.UserId
 		db := database.GetDBInstance()
 		var user model.EpUser

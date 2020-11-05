@@ -6,8 +6,10 @@
 package controller
 
 import (
+	"encoding/json"
 	"gin-rbac/common/database"
 	"gin-rbac/common/jwt"
+	"gin-rbac/common/redis"
 	"gin-rbac/model"
 	"gin-rbac/response"
 	"github.com/gin-gonic/gin"
@@ -47,6 +49,13 @@ func Login(c *gin.Context) {
 		log.Printf("token generate error: %v", err)
 		return
 	}
+	// 存储token,user到redis
+	userJson, _ := json.Marshal(user)
+	b := redis.Set("go-gin:"+token, userJson)
+	if !b {
+		response.Fail(c, "token放置失败", gin.H{"data": nil})
+	}
+
 	// 返回结果
 	response.Success(c, gin.H{"data": token}, "登录成功!")
 }
