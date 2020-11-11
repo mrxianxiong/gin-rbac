@@ -10,9 +10,9 @@ import (
 	"gin-rbac/dto"
 	"gin-rbac/model"
 	"gin-rbac/response"
+	"gin-rbac/util/md5"
 	"github.com/gin-gonic/gin"
 	guuid "github.com/google/uuid"
-	"golang.org/x/crypto/bcrypt"
 	"net/http"
 	"strconv"
 	"time"
@@ -30,17 +30,17 @@ func AddEpUser(c *gin.Context) {
 	createId := c.PostForm("CreateId")
 
 	// 创建用户
-	haseDPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	encodeMD5 := md5.EncodeMD5(password)
+	create_id, err := strconv.ParseInt(createId, 10, 64)
 	if err != nil {
-		response.Response(c, http.StatusInternalServerError, 500, nil, "加密错误")
+		response.Response(c, http.StatusInternalServerError, 500, nil, "转换异常！")
 		return
 	}
-	create_id, err := strconv.ParseInt(createId, 10, 64)
 	uuid := guuid.New().String()
 	newUser := model.EpUser{
 		Id:         uuid,
 		UserName:   userName,
-		Password:   string(haseDPassword),
+		Password:   string(encodeMD5),
 		NickName:   nickName,
 		CardId:     cardId,
 		Source:     source,
